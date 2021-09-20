@@ -15,9 +15,10 @@ jobs:
         uses: actions/checkout@v2
       - name: build
         run: |
+          mkdir build-context/
           for app in hasher rng webui worker
           do
-            docker image build --file Dockerfile-${app} --tag ${github_username}/${github_repo}:${github_branch}-${app} /mnt/
+            docker image build --file Dockerfile-${app} --tag ${github_username}/${github_repo}:${github_branch}-${app} build-context/
           done
       - name: networking
         run: |
