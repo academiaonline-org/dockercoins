@@ -18,4 +18,8 @@ docker container run --entrypoint ruby --rm --volume ${PWD}/hasher/hasher.rb:/ap
 
 docker container run --entrypoint python --rm --volume ${PWD}/rng/rng.py:/app/rng.py:ro --workdir /app/ ${github_username}/${github_repo}:${github_branch}${github_branch}-rng rng.py
 
+docker container run --entrypoint node --rm --volume ${PWD}/webui/webui.js:/app/webui.js:ro --volume ${PWD}/webui/files/:/app/files/:ro --workdir /app/ ${github_username}/${github_repo}:${github_branch}-webui webui.js
+
+
+
 ```
