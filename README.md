@@ -1,5 +1,7 @@
 # dockercoins
 
+[![CI](https://github.com/ganimedes-colomar/dockercoins-2/actions/workflows/ci.yaml/badge.svg?branch=2021-09)](https://github.com/ganimedes-colomar/dockercoins-2/actions/workflows/ci.yaml)
+
 ```
 github_username=patrabas1
 github_repo=dockercoins
@@ -41,5 +43,3 @@ docker network connect hasher worker
 docker network connect rng worker
 
 docker container run --detach --entrypoint node --name webui --network redis --publish 8080:8080 --restart always --volume ${PWD}/webui/webui.js:/app/webui.js:ro --volume ${PWD}/webui/files/:/app/files/:ro --workdir /app/ ${github_username}/${github_repo}:${github_branch}-webui webui.js
-
-```
