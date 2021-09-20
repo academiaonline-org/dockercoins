@@ -1,0 +1,61 @@
+networks:
+  hasher:
+    internal: true
+  redis:
+    internal: true
+  rng:
+    internal: true
+services:
+  hasher:
+    command: hasher.rb
+    entrypoint: ruby
+    image: ${github_username}/${github_repo}:${github_branch}-hasher
+    networks:
+      - hasher
+    volumes:
+      - ${PWD}/hasher/hasher.rb:/app/hasher.rb:ro
+    working_dir: /app/
+  redis:
+    command: redis-server
+    entrypoint: docker-entrypoint.sh
+    image: library/redis:alpine
+    networks:
+      - redis
+    volumes:
+      - redis:/data/:rw
+    working_dir: /data/
+  rng:
+    command: rng.py
+    entrypoint: python
+    image: ${github_username}/${github_repo}:${github_branch}-rng
+    networks:
+      - rng
+    volumes:
+      - ${PWD}/rng/rng.py:/app/rng.py:ro
+    working_dir: /app/
+  webui:
+    command: webui.js
+    entrypoint: node
+    image: ${github_username}/${github_repo}:${github_branch}-webui
+    networks:
+      - redis
+    ports:
+      - 8080:8080
+    volumes:
+      - ${PWD}/webui/webui.js:/app/webui.js:ro
+      - ${PWD}/webui/files/:/app/files/:ro
+    working_dir: /app/
+  worker:
+    command: worker.py
+    entrypoint: python
+    image: ${github_username}/${github_repo}:${github_branch}-worker
+    networks:
+      - hasher
+      - redis
+      - rng
+    volumes:
+      - ${PWD}/worker/worker.py:/app/worker.py:ro
+    working_dir: /app/
+version: '3.8'
+volumes:
+  redis:
