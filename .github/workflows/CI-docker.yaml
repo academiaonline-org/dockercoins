@@ -1,0 +1,48 @@
+name: CI-docker
+env:
+  github_username: patrabas1
+  github_repo: dockercoins
+  github_branch: 2021-09
+on:
+  push:
+    branches:
+      - 2021-09
+jobs:
+  docker:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: build
+        run: |
+          mkdir build-context/
+          for app in hasher rng webui worker
+          do
+            docker image build --file Dockerfile-${app} --tag ${github_username}/${github_repo}:${github_branch}-${app} build-context/
+          done
+      - name: networking
+        run: |
+          for network in hasher redis rng
+          do
+            docker network create ${network}
+          done
+      - name: hasher
+        run: docker container run --detach --entrypoint ruby --name hasher --network hasher --restart always --volume ${PWD}/hasher/hasher.rb:/app/hasher.rb:ro --workdir /app/ ${github_username}/${github_repo}:${github_branch}-hasher hasher.rb
+      - name: rng
+        run: docker container run --detach --entrypoint python --name rng --network rng --restart always --volume ${PWD}/rng/rng.py:/app/rng.py:ro --workdir /app/ ${github_username}/${github_repo}:${github_branch}-rng rng.py
+      - name: redis
+        run: docker container run --detach --entrypoint docker-entrypoint.sh --name redis --network redis --restart always --volume redis:/data/:rw --workdir /data/ library/redis:alpine redis-server
+      - name: worker
+        run: |
+          docker container run --detach --entrypoint python --name worker --network redis --restart always --volume ${PWD}/worker/worker.py:/app/worker.py:ro --workdir /app/ ${github_username}/${github_repo}:${github_branch}-worker worker.py
+          docker network connect hasher worker
+          docker network connect rng worker
+      - name: webui
+        run: docker container run --detach --entrypoint node --name webui --network redis --publish 8080:8080 --restart always --volume ${PWD}/webui/webui.js:/app/webui.js:ro --volume ${PWD}/webui/files/:/app/files/:ro --workdir /app/ ${github_username}/${github_repo}:${github_branch}-webui webui.js
+      - name: test
+        run: |
+          while true
+          do
+            sleep 10
+            curl -s localhost:8080/index.html | grep 'DockerCoin Miner WebUI' && break
+          done
