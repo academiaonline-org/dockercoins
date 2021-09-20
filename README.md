@@ -1,6 +1,6 @@
 # dockercoins
 
-[![CI](https://github.com/ganimedes-colomar/dockercoins-2/actions/workflows/ci.yaml/badge.svg?branch=2021-09)](https://github.com/ganimedes-colomar/dockercoins-2/actions/workflows/ci.yaml)
+[![CI](https://github.com/patrabas1/dockercoins/actions/workflows/ci.yaml/badge.svg?branch=2021-09)](https://github.com/patrabas1/dockercoins/actions/workflows/ci.yaml)
 
 ```
 github_username=patrabas1
