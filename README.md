@@ -27,7 +27,7 @@ done
 
 docker container run --detach --entrypoint ruby --name hasher --network hasher --restart always --volume ${PWD}/hasher/hasher.rb:/app/hasher.rb:ro --workdir /app/ ${github_username}/${github_repo}:${github_branch}-hasher hasher.rb
 
-docker container run --detach --entrypoint docker-entrypoint.sh --name redis --network redis --restart always --volume redis:/data/:rw --workdir /data/ ${github_username}/${github_repo}:${github_branch}-redis redis-server
+docker container run --detach --entrypoint docker-entrypoint.sh --name redis --network redis --restart always --volume redis:/data/:rw --workdir /data/ ${github_username}/${github_repo}:${github_branch}-redis library/redis:alpine redis-server
 
 docker container run --detach --entrypoint python --name rng --network rng --restart always --volume ${PWD}/rng/rng.py:/app/rng.py:ro --workdir /app/ ${github_username}/${github_repo}:${github_branch}-rng rng.py
 
