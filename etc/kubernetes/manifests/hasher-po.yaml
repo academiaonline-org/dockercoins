@@ -1,1 +1,79 @@
 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hasher-po
+spec:
+  containers:
+    -
+      args:
+        - hasher.rb
+      command:
+        - /usr/local/bin/ruby
+      env:
+        -
+          name: author
+          value: Ganimedes
+      image: ganimedescolomar/dockercoins-2:2021-09-hasher
+      name: hasher-container
+      ports:
+        -
+          containerPort: 8080
+          protocol: TCP
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100M
+        requests:
+          cpu: 100m
+          memory: 100M
+      volumeMounts:
+        -
+          mountPath: /app/
+          name: public
+          readOnly: true
+      workingDir: /app/
+  initContainers:
+    -
+      args:
+        - git clone https://github.com/ganimedes-colomar/dockercoins-2 ;
+        - cd dockercoins-2 ;
+        - git checkout 2021-09 ;
+        - cp -r hasher/hasher.rb /public/ ;
+      command:
+        - /bin/sh
+        - -c
+      env:
+        -
+          name: author
+          value: Ganimedes
+      image: alpine/git:1.0.30@sha256:0595334722a2d486ed7c1a10a9138180f052343d5569942ecceb88d6e7fd1c0f
+      name: hasher-git
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100M
+        requests:
+          cpu: 100m
+          memory: 100M
+      volumeMounts:
+        -
+          mountPath: /private/
+          name: private
+          readOnly: false
+        -
+          mountPath: /public/
+          name: public
+          readOnly: false
+      workingDir: /private/
+  volumes:
+    -
+      emptyDir:
+        medium: Memory
+        sizeLimit: 10M
+      name: private
+    -
+      emptyDir:
+        medium: Memory
+        sizeLimit: 1M
+      name: public
