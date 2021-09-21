@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rng-po
+spec:
+  containers:
+    -
+      args: 
+        - rng.py
+      command:
+        - python
+      env:
+        -
+          name: AUTHOR
+          value: "Sebastian Colomar"
+      image: academiaonline/simplilearn-dockercoins:latest-rng
+      name: rng-container
+      ports:
+        -
+          containerPort: 8080
+          protocol: TCP
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100M
+        requests:
+          cpu: 100m
+          memory: 100M
+      volumeMounts:
+        -
+          mountPath: /app/
+          name: public
+          readOnly: true
+      workingDir: /app/
+  initContainers:
+    -
+      args: 
+        - https://raw.githubusercontent.com/academiaonline/simplilearn-dockercoins/2021-09/rng/rng.py
+      command:
+        - wget
+      env:
+        - 
+          name: AUTHOR
+          value: "Sebastian Colomar"
+      image: library/busybox:1.33.1-uclibc@sha256:febcf61cd6e1ac9628f6ac14fa40836d16f3c6ddef3b303ff0321606e55ddd0b
+      name: rng-wget
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100M
+        requests:
+          cpu: 100m
+          memory: 100M
+      volumeMounts:
+        -
+          mountPath: /public/
+          name: public
+          readOnly: false
+      workingDir: /public/
+  volumes:
+    -
+      emptyDir:
+        medium: Memory
+        sizeLimit: 1M
+      name: public
