@@ -22,10 +22,6 @@ spec:
         -
           containerPort: 6379
           protocol: TCP
-      readinessProbe:
-        exec:
-          command:
-            - redis-cli INFO
       resources:
         limits:
           cpu: 100m
