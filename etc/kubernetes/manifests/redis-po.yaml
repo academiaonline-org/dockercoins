@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis-po
+spec:
+  containers:
+    -
+      args:
+        - redis-server
+      command:
+        - docker-entrypoint.sh
+      env:
+        -
+          name: author
+          value: Ganimedes
+      image: library/redis:alpine
+      livenessProbe:
+        tcpSocket:
+          port: 6379
+      name: redis-container
+      ports:
+        -
+          containerPort: 6379
+          protocol: TCP
+      readinessProbe:
+        exec:
+          command:
+            - redis-cli INFO
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100M
+        requests:
+          cpu: 100m
+          memory: 100M
+      volumeMounts:
+        -
+          mountPath: /data/
+          name: redis-volume
+          readOnly: false
+      workingDir: /data/
+  volumes:
+    -
+      persistentVolumeClaim:
+        claimName: redis-pvc
+        readOnly: false
+      name: redis-volume
