@@ -14,9 +14,6 @@ spec:
           name: AUTHOR
           value: "Sebastian Colomar"
       image: academiaonline/simplilearn-dockercoins:latest-webui
-      livenessProbe:
-        tcpSocket:
-          port: 8080
       name: webui-container
       ports:
         -
@@ -31,7 +28,7 @@ spec:
           memory: 100M
       volumeMounts:
         -
-          mountPath: /app/
+          mountPath: /app/files/
           name: webui-files-volume
           readOnly: true
         -
@@ -47,7 +44,7 @@ spec:
           git clone https://github.com/ganimedes-colomar/dockercoins-2/ ;
           cd dockercoins-2/ ;
           git checkout 2021-09 ;
-          cp -r -v webui/files/ /public/ ;
+          cp -r -v webui/files/* /public/ ;
       command:
         - sh
         - -c
