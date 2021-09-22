@@ -10,16 +10,10 @@ spec:
     -
       from:
         - 
-          namespaceSelector:
-            matchLabels:
-              project: gca-dockercoins-2
           podSelector:
             matchLabels:
               name: worker-rc
         - 
-          namespaceSelector:
-            matchLabels:
-              project: gca-dockercoins-2
           podSelector:
             matchLabels:
               name: webui-rc
