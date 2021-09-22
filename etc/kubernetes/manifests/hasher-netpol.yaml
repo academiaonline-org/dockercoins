@@ -8,9 +8,6 @@ spec:
       name: hasher-rc
   ingress:
     - from:
-        - namespaceSelector:
-            matchLabels:
-              project: gca-dockercoins-2
         - podSelector:
             matchLabels:
               name: worker-rc
