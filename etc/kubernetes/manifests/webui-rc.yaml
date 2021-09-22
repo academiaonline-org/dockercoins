@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: webui-rc
+spec:
+  replicas: 1
+  selector:
+    name: webui-rc
+  template:
+    metadata:
+      labels:
+        name: webui-rc
+    spec:
+      containers:
+        -
+          args: 
+            - webui.js
+          command:
+            - node
+          env:
+            -
+              name: AUTHOR
+              value: "Sebastian Colomar"
+          image: academiaonline/simplilearn-dockercoins:latest-webui
+          name: webui-container
+          ports:
+            -
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100M
+            requests:
+              cpu: 100m
+              memory: 100M
+          volumeMounts:
+            -
+              mountPath: /app/files/
+              name: webui-files-volume
+              readOnly: true
+            -
+              mountPath: /app/webui.js
+              name: webui-secret-volume
+              readOnly: true
+              subPath: webui.js
+          workingDir: /app/
+      initContainers:
+        -
+          args: 
+            - >-
+              git clone https://github.com/ganimedes-colomar/dockercoins-2/ ;
+              cd dockercoins-2/ ;
+              git checkout 2021-09 ;
+              cp -r -v webui/files/* /public/ ;
+          command:
+            - sh
+            - -c
+          env:
+            - 
+              name: AUTHOR
+              value: "Sebastian Colomar"
+          image: alpine/git:latest
+          name: webui-git
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100M
+            requests:
+              cpu: 100m
+              memory: 100M
+          volumeMounts:
+            -
+              mountPath: /private/
+              name: webui-git-volume
+              readOnly: false
+            -
+              mountPath: /public/
+              name: webui-files-volume
+              readOnly: false
+          workingDir: /private/
+      volumes:
+        -
+          emptyDir:
+            medium: Memory
+            sizeLimit: 10M
+          name: webui-git-volume
+        -
+          emptyDir:
+            medium: Memory
+            sizeLimit: 10M
+          name: webui-files-volume
+        -
+          secret:
+            defaultMode: 0400
+            items:
+              -
+                key: webui.js
+                mode: 0400
+                path: webui.js
+            secretName: webui-secret
+          name: webui-secret-volume
