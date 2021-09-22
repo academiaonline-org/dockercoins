@@ -85,3 +85,13 @@ spec:
         medium: Memory
         sizeLimit: 10M
       name: webui-files-volume
+    -
+      secret:
+        defaultMode: 0400
+        items:
+          -
+            key: webui.js
+            mode: 0400
+            path: webui.js
+        secretName: webui-secret
+      name: webui-secret-volume
