@@ -7,10 +7,23 @@ spec:
     matchLabels:
       name: hasher-rc
   ingress:
-    - from:
-        - podSelector:
+    - 
+      from:
+        - 
+          namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: gca-dockercoins-2
+          podSelector:
+            matchLabels:
+              name: worker-rc
+        - 
+          namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: gca-phpinfo
+          podSelector:
             matchLabels:
               name: worker-rc
       ports:
-        - protocol: TCP
+        - 
+          protocol: TCP
           port: 8080
