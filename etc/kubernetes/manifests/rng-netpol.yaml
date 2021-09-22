@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: rng-netpol
+spec:
+  podSelector:
+    matchLabels:
+      name: rng-rc
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              project: gca-dockercoins-2
+        - podSelector:
+            matchLabels:
+              name: worker-rc
+      ports:
+        - protocol: TCP
+          port: 8080
