@@ -22,6 +22,7 @@ spec:
               name: AUTHOR
               value: "Sebastian Colomar"
           image: academiaonline/simplilearn-dockercoins:latest-hasher
+          imagePullPolicy: Always
           livenessProbe:
             tcpSocket:
               port: 8080
@@ -74,3 +75,4 @@ spec:
             medium: Memory
             sizeLimit: 1M
           name: public
+© 2021 GitHub, Inc.
