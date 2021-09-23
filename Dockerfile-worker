@@ -1,3 +1,8 @@
 FROM python:alpine
 
 RUN pip install Redis requests
+
+FROM scratch
+COPY --from=0 / /
+
+ENV PATH /usr/local/bin:$PATH
