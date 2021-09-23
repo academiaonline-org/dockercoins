@@ -1,3 +1,12 @@
 FROM ruby:alpine
+
 RUN apk add build-base
 RUN gem install sinatra thin
+
+FROM scratch
+COPY --from=0 / /
+
+ENV GEM_HOME /usr/local/bundle
+ENV BUNDLE_SILENCE_ROOT_WARNING=1 \
+	BUNDLE_APP_CONFIG="$GEM_HOME"
+ENV PATH $GEM_HOME/bin:$PATH
