@@ -1,0 +1,47 @@
+name: CI-kubernetes
+env:
+  github_username: ganimedes-colomar
+  github_repo: dockercoins-2
+  github_branch: 2021-09
+on:
+  push:
+    branches:
+      - 2021-09
+jobs:
+  kubernetes:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: build
+        run: |
+          mkdir build-context/
+          for app in hasher rng webui worker
+          do
+            docker image build --file Dockerfile-${app} --tag ${github_username}/${github_repo}:${github_branch}-${app} build-context/
+            sed --in-place /image:.*${app}/s/image:.*$/image:\ ${github_username}\\/${github_repo}:${github_branch}-${app}/ etc/kubernetes/manifests/*.yaml
+          done
+      - name: kubernetes
+        run: |
+          uuid=$( md5sum LICENSE | cut -d\  -f1 )
+          git clone --single-branch -b v1.2 https://github.com/academiaonline/kubernetes ${uuid}
+          path=${uuid}/bin/cluster/ubuntu18/install-docker-kubelet.sh
+          source ${path}
+          path=${uuid}/bin/cluster/ubuntu18/install-leader.sh
+          source ${path}
+          master=$( kubectl get node | grep master | awk '{ print $1 }' )
+          kubectl taint node ${master} node-role.kubernetes.io/master:NoSchedule-
+          rm -rf ${uuid}
+      - name: deploy
+        run: |
+          rm -f etc/kubernetes/manifests/*-po.yaml
+          sed --in-place /imagePullPolicy:/s/Always/Never/ etc/kubernetes/manifests/*.yaml
+          sed --in-place /imagePullPolicy:/s/IfNotPresent/Never/ etc/kubernetes/manifests/*.yaml
+          kubectl apply --filename etc/kubernetes/manifests/
+      - name: test
+        run: |
+          while true
+          do
+            sleep 10
+            curl -s $( ip route | awk /docker0.proto/'{ print $9 }' ):8080/index.html | grep 'DockerCoin Miner WebUI' && break
+          done
