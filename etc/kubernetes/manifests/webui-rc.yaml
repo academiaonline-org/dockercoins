@@ -22,6 +22,7 @@ spec:
               name: AUTHOR
               value: "Sebastian Colomar"
           image: academiaonline/simplilearn-dockercoins:latest-webui
+          imagePullPolicy: Always
           name: webui-container
           ports:
             -
@@ -100,3 +101,4 @@ spec:
                 path: webui.js
             secretName: webui-secret
           name: webui-secret-volume
+ 
