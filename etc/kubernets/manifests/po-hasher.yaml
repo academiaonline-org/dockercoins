@@ -1,0 +1,43 @@
+apiVersion: v1
+Kind: Pod
+metadadta: 
+  name: po-hasher
+spec:
+  containers: 
+    -
+      args: 
+        -
+          hasher.rb
+      command:
+        -
+          ruby
+      env:
+        -
+          name: TOKEN
+          value: Hola que tal.
+      image: userdokerhub/ruby:sinatra-thin
+      name: container-po-hasher
+      ports: 
+        -
+          containerPort: 8081
+          protocol: TCP
+      volumeMounts:
+        -
+          muntPath: /hasher.rb
+          name: volumen-po-hasher
+          readOnly: true
+          subPath: hasher.rb
+      workingDir: /
+  volumes:
+    -
+      name: volumen-po-hasher
+      secret:
+        -
+          defaultMount: 0400
+          items:
+            -
+              key: hasher.rb
+              mode: 0400
+              path: hasher.rb
+           secretNames: secret-hasher
+        
