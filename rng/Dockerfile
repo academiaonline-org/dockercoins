@@ -1,3 +1,2 @@
-FROM python:lastest
+FROM python:latest
 RUN pip install Flask
-RUN pip install request
