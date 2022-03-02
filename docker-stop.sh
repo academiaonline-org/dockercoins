@@ -1,3 +1,6 @@
+docker network disconnect redis worker
+docker network disconnect rng worker
+
 docker stop worker
 docker stop webui
 docker stop rng
