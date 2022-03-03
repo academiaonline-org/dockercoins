@@ -10,8 +10,7 @@ spec:
     metadata:
       labels:
         etiqueta: pruebalbl
-    spec:
-      containers:
+  containers:
         -
           args:
             -
@@ -42,7 +41,7 @@ spec:
               readOnly: true
               subPath: hasher.rb
           workingDir: /hasher/
-      volumes:
+  volumes:
         -
           name: volume-po-hasher
           secret:
