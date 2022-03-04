@@ -1,16 +1,17 @@
 apiVersion: v1
-kind: Pod
+kind: ReplicationController
 metadata: 
   name: rc-hasher
 spec: 
   replicas: 1
-  selector:
-    etiquera: pruebalbl
+  selector: 
+    etiqueta: loquesea
   template:
     metadata:
-      labels:
-        etiqueta: pruebalbl
-  containers:
+      labels: 
+        etiqueta: loquesea
+    spec:
+      containers:
         -
           args:
             -
@@ -41,7 +42,7 @@ spec:
               readOnly: true
               subPath: hasher.rb
           workingDir: /hasher/
-  volumes:
+      volumes:
         -
           name: volume-po-hasher
           secret:
