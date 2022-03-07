@@ -1,0 +1,44 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata: 
+  name: dc-redis
+spec: 
+  replicas: 1
+  selector: 
+    dcredis: v2
+  template:
+    metadata:
+      labels: 
+        dcredis: v2
+    spec:
+      containers:
+        -
+          args:
+            -
+             redis-server
+          command:
+            -
+              docker-entrypoint.sh
+          env:
+            -
+              name: TOKEN
+              value: hola que tal desde rdis
+
+          image: redis:latest
+          name: container
+          ports:
+            -
+              containerPort: 6379
+              protocol: TCP
+          volumeMounts:
+            -
+              mountPath: /data/
+              name: volume
+              readOnly: true
+          workingDir: /data/
+      volumes:
+        -
+          name: volume
+          persistentVolumeClaims:
+            claimName: pvc-redis
+            readOnly: false
