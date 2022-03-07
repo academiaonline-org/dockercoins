@@ -1,0 +1,45 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:  
+  name: dc-worker
+spec: 
+  replicas: 1
+  selector: 
+    dockercoins: worker
+  template:
+    metadata:
+      labels: 
+        dockercoins: worker
+    spec:
+      containers:
+        -
+          args:
+            -
+              worker.py
+          command:
+            -
+              python
+          env:
+            -
+              name: TOKEN
+              value: hola que tal
+          image: eleigle/python:Redis-requests
+          name: container
+          volumeMounts:
+            -
+              mountPath: /worker/worker.py
+              name: volume
+              readOnly: true
+              subPath: worker.py
+          workingDir: /worker/
+      volumes:
+        -
+          name: volume
+          secret:
+            defaultMode: 0400
+            items:
+              -
+                key: worker.py
+                mode: 0400
+                path: worker.py
+            secretName: secret-worker
