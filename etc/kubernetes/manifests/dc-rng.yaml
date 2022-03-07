@@ -1,0 +1,50 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata: 
+  name: dc-rng
+spec: 
+  replicas: 1
+  selector: 
+    dcrng: v2
+  template:
+    metadata:
+      labels: 
+        dcrng: v2
+    spec:
+      containers:
+        -
+          args:
+            -
+              rng.py
+          command:
+            -
+              python
+          env:
+            -
+              name: TOKEN
+              value: hola que tal rng
+
+          image: eleigle/python:Flask
+          name: container
+          ports:
+            -
+              containerPort: 8081
+              protocol: TCP
+          volumeMounts:
+            -
+              mountPath: /rng/rng.py
+              name: volume
+              readOnly: true
+              subPath: rng.py
+          workingDir: /rng/
+      volumes:
+        -
+          name: volume
+          secret:
+            defaultMode: 0400
+            items:
+              -
+                key: rng.py
+                mode: 0400
+                path: rng.py
+            secretName: secret-rng
