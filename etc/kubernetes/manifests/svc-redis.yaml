@@ -1,0 +1,5 @@
+apiVersion_ v1
+kind: Service
+metadata:
+  name: redis
+spec:
