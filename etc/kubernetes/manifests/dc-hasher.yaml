@@ -1,7 +1,7 @@
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata: 
-  name: rc-hasher
+  name: dc-hasher
 spec: 
   replicas: 1
   selector: 
