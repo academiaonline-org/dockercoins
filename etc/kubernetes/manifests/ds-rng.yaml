@@ -1,15 +1,16 @@
 apiVersion: apps/v1
-kind: DaeminSet
+kind: DaemonSet
 metadata: 
   name: ds-rng
 spec: 
   replicas: 1
   selector: 
-    dsrng: v2
+    matchLabels:
+      dockercoins: rng
   template:
     metadata:
       labels: 
-        dsrng: v2
+        dockercoins: rng
     spec:
       containers:
         -
@@ -22,8 +23,7 @@ spec:
           env:
             -
               name: TOKEN
-              value: hola que tal rng
-
+              value: hola que tal
           image: eleigle/python:Flask
           name: container
           ports:
