@@ -3,3 +3,53 @@ kind: DeploymentConfig
 metadata:  
   name: dc-webui
 spec: 
+  replicas: 1
+  selector: 
+    dockercoins: worker
+  template:
+    metadata:
+      labels: 
+        dockercoins: worker
+    spec:
+      containers:
+        -
+          args:
+            -
+              webui.js
+          command:
+            -
+              node
+          env:
+            -
+              name: TOKEN
+              value: hola que tal
+          image: eleigle/node:express-redis
+          name: container
+          volumeMounts:
+            -
+              mountPath: /webui/webui.js
+              name: volume
+              readOnly: true
+              subPath: webui.js
+          workingDir: /webui/
+      volumes:
+        -
+          name: volume
+          secret:
+            defaultMode: 0400
+            items:
+              -
+                key: webui.js
+                mode: 0400
+                path: webui.js
+            secretName: secret-webui
+        -
+          name: volume
+          secret:
+            defaultMode: 0400
+            items:
+              -
+                key: webui.js
+                mode: 0400
+                path: webui.js
+            secretName: secret-worker
