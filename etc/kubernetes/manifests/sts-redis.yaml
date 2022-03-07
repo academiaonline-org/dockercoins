@@ -37,9 +37,19 @@ spec:
               name: volume
               readOnly: true
           workingDir: /data/
-  volumeClaimTemplate:
+  volumeClaimTemplates:
     -
       metadata:
+        name: volume
       spec:
+        accessModes: 
+          - ReadWriteOnce
+        resources:
+           limits: 
+           storage: 1Gi
+        requests:
+           storage: 1Gi
+           # lo anulamos pq  depende de amazon azure, ... storageClassName:  gp2
+           volumeMode: Filesystem
 
 
