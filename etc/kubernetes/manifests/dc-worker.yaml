@@ -43,3 +43,13 @@ spec:
                 mode: 0400
                 path: worker.py
             secretName: secret-worker
+        -
+          name: volume
+          secret:
+            defaultMode: 0400
+            items:
+              -
+                key: worker.py
+                mode: 0400
+                path: worker.py
+            secretName: secret-worker
