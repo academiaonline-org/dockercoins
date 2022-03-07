@@ -5,11 +5,11 @@ metadata:
 spec: 
   replicas: 1
   selector: 
-    rcdockericons: version 2
+    rcdockericons: v2
   template:
     metadata:
       labels: 
-        rcdockericons: version 2
+        rcdockericons: v2
     spec:
       containers:
         -
