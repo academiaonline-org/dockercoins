@@ -5,11 +5,11 @@ metadata:
 spec: 
   replicas: 1
   selector: 
-    etiqueta: loquesea
+    dockericons: version 2
   template:
     metadata:
       labels: 
-        etiqueta: loquesea
+        dockericons: version 2
     spec:
       containers:
         -
