@@ -1,0 +1,14 @@
+apiVersion: v1
+Kind: PersistenVolumeClaim
+metadata:
+  name: pvc-redis
+spec:
+  accessModes: 
+    - ReadWriteOnce
+  resources:
+    limits: 
+      storage: 1Gi
+    requests:
+      storage: 1Gi
+  # lo anulamos pq  depende de amazon azure, ... storageClassName:  gp2
+  volumeMode: Filesystem
