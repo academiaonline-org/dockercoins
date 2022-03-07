@@ -8,7 +8,8 @@ docker run -d --rm --name hasher --network hasher --entrypoint ruby -u nobody -v
 docker ps
 docker logs hasher
 docker top hasher
-docker run -d --rm --name redis --network redis --entrypoint docker-entrypoint.sh -u redis -v redis-data:/data/ redis:latest redis-server
+#docker run -d --rm --name redis --network redis --entrypoint docker-entrypoint.sh -u redis -v redis-data:/data/ redis:latest redis-server
+docker run -d --rm --name redis --network redis --entrypoint docker-entrypoint.sh -u redis -v redis-data:/data/ -w /data/ redis:latest redis-server
 docker ps
 docker logs redis
 docker top redis
