@@ -41,6 +41,37 @@ spec:
               readOnly: true
             
           workingDir: /app/
+      initcontainers:
+        -
+          args:
+            -
+                       
+          command:
+            -
+              sh 
+              -c 
+          env:
+            -
+              name: TOKEN
+              value: hola que tal
+          image: eleigle/node:express-redis
+          name: container
+          ports:
+            -
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            -
+              mountPath: /app/webui.js
+              name: volume
+              readOnly: true
+              subPath: webui.js
+            -
+              mountPath: /app/files
+              name: volume-files
+              readOnly: true
+            
+          workingDir: /app/
       volumes:
         -
           name: volume
