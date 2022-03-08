@@ -9,5 +9,5 @@ spec:
       protocol: TCP
       targetPort: 6379
   selector:
-    stsredis: v2
-  type:
+    dcredis: v2
+  type: ClusterIP
