@@ -5,9 +5,9 @@ metadata:
   name: webui
 spec:
   ports:
-    - port: 808o
+    - port: 80
       protocol: TCP
       targetPort: 8080
   selector:
-    dockercoins: rng
+    dockercoins: worker
   type: ClusterIP
