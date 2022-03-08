@@ -64,9 +64,7 @@ spec:
               mountPath: /tmp
               name: volume-temporal
               readOnly: false
-            workingDir: /app/
-            
-          
+             workingDir: /app/
       volumes:
         -
           name: volume
