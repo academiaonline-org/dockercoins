@@ -5,11 +5,11 @@ metadata:
 spec: 
   replicas: 1
   selector: 
-    dockercoins: worker
+    dockercoins: webui
   template:
     metadata:
       labels: 
-        dockercoins: worker
+        dockercoins: webui
     spec:
       containers:
         -
@@ -25,13 +25,22 @@ spec:
               value: hola que tal
           image: eleigle/node:express-redis
           name: container
+          ports:
+            -
+              containerPort: 8080
+              protocol: TCP
           volumeMounts:
             -
-              mountPath: /webui/webui.js
+              mountPath: /app/webui.js
               name: volume
               readOnly: true
               subPath: webui.js
-          workingDir: /webui/
+            -
+              mountPath: /app/files
+              name: volume-files
+              readOnly: true
+            
+          workingDir: /app/
       volumes:
         -
           name: volume
@@ -44,7 +53,7 @@ spec:
                 path: webui.js
             secretName: secret-webui
         -
-          name: volume
+          name: volume-files
           secret:
             defaultMode: 0400
             items:
@@ -52,4 +61,4 @@ spec:
                 key: webui.js
                 mode: 0400
                 path: webui.js
-            secretName: secret-worker
+            secretName: secret-webui
