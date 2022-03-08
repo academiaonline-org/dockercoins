@@ -1,0 +1,12 @@
+apVersion: v1
+kind: Service
+metadata:
+  name: hasher
+spec:
+  ports:
+    - port: 8081
+      protocol: TCP
+      targetPort: 8081
+  selector:
+    dockericons: hasher
+  type: ClusterIP
