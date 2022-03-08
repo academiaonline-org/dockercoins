@@ -8,5 +8,5 @@ spec:
       protocol: TCP
       targetPort: 8081
   selector:
-    dockericons: hasher
+    dcdockericons: v2
   type: ClusterIP
