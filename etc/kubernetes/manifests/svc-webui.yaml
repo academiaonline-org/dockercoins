@@ -1,0 +1,13 @@
+
+apVersion: v1
+kind: Service
+metadata:
+  name: webui
+spec:
+  ports:
+    - port: 808o
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    dockercoins: rng
+  type: ClusterIP
