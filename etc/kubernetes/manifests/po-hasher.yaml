@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: po-hasher
+spec: 
+  containers:
+    -
+      args:
+        -
+          hasher.rb
+      command:
+        -
+          ruby
+      env:
+        -
+          name: TOKEN
+          value: hola que tal
+        -
+          name: HASHER_RB
+          valueFrom:
+            secretKeyRef: 
+              key: hasher.rb
+              name: secret-hasher
+      image: eleigle/ruby:sinatra-thin
+      name: container-po-hasher
+      ports:
+        -
+          containerPort: 8081
+          protocol: TCP
+      volumeMounts:
+        -
+          mountPath: /hasher/hasher.rb
+          name: volume-po-hasher
+          readOnly: true
+          subPath: hasher.rb
+      workingDir: /hasher/
+  volumes:
+    -
+      name: volume-po-hasher
+      secret:
+        defaultMode: 0400
+        items:
+          -
+            key: hasher.rb
+            mode: 0400
+            path: hasher.rb
+        secretName: secret-hasher

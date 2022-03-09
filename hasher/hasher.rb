@@ -3,7 +3,7 @@ require 'sinatra'
 require 'socket'
 
 set :bind, '0.0.0.0'
-set :port, 80
+set :port, 8081
 
 post '/' do
     # Simulate a bit of delay
@@ -15,4 +15,5 @@ end
 get '/' do
     "HASHER running on #{Socket.gethostname}\n"
 end
+
 

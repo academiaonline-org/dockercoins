@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata: 
+  name: ds-rng
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      dockercoins: rng
+  template:
+    metadata:
+      labels: 
+        dockercoins: rng
+    spec:
+      containers:
+        -
+          args:
+            -
+              rng.py
+          command:
+            -
+              python
+          env:
+            -
+              name: TOKEN
+              value: hola que tal
+          image: eleigle/python:Flask
+          name: container
+          ports:
+            -
+              containerPort: 8081
+              protocol: TCP
+          volumeMounts:
+            -
+              mountPath: /rng/rng.py
+              name: volume
+              readOnly: true
+              subPath: rng.py
+          workingDir: /rng/
+      volumes:
+        -
+          name: volume
+          secret:
+            defaultMode: 0400
+            items:
+              -
+                key: rng.py
+                mode: 0400
+                path: rng.py
+            secretName: secret-rng

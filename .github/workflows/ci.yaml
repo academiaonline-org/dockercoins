@@ -1,0 +1,16 @@
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    steps:
+      -
+        name: checkout
+        uses: actions/checkout@v2
+      -
+        name: build-hasher
+        run: docker build -t  
+name: CI
+on:
+  push:
+    branches:
+      -
+        2022-03-Santander
