@@ -33,7 +33,7 @@ spec:
               containerPort: 6379
               protocol: TCP
           securityContext:
-            runAsGroup: 65534
+            runAsGroup: 0
             runAsUser: 65534
           volumeMounts:
             -
