@@ -42,6 +42,8 @@ jobs:
           do sleep 10
           kubectl logs svc/webui 2>& 1 | grep WEBUI.running && break
           done
+      - name: test-redis
+        run: kubectl exec sts/redis-sts-1-1 -- ls -l /data/
           
           
           
