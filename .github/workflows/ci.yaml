@@ -43,7 +43,11 @@ jobs:
           kubectl logs svc/webui 2>& 1 | grep WEBUI.running && break
           done
       - name: test-redis
-        run: kubectl exec sts/redis-sts-1-1 -- ls -ld /data/
+        run: |
+          kubectl exec sts/redis-sts-1-1 -- id
+          kubectl exec sts/redis-sts-1-1 -- ls -ld /data/
+          kubectl exec sts/redis-sts-1-1 -- ls -l /data/
+          kubectl exec sts/redis-sts-1-1 -- touch /data/test
           
           
           
