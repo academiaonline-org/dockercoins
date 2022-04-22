@@ -32,6 +32,9 @@ spec:
             - 
               containerPort: 6379
               protocol: TCP
+          securityContext:
+            runAsGroup: 65534
+            runAsUser: 65534
           volumeMounts:
             -
               mountPath: /data/
