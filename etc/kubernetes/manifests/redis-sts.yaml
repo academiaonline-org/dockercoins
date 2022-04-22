@@ -50,6 +50,9 @@ spec:
             - -c
           image: busybox
           name: init-container
+          securityContext:
+            runAsGroup: 0
+            runAsUser: 65534
           volumeMounts:
             -
               mountPath: /data/
