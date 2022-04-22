@@ -41,6 +41,21 @@ spec:
               name: redis-volume
               readOnly: false
           workingDir: /data/
+      initContainers:
+        -
+          args:
+            - chmod g+w /data/
+          command:
+            - sh
+            - -c
+          image: busybox
+          name: init-container
+          volumeMounts:
+            -
+              mountPath: /data/
+              name: redis-volume
+              readOnly: false
+          workingDir: /data/
   serviceName: ''
   volumeClaimTemplates:
     - 
